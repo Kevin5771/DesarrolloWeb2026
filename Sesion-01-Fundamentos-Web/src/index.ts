@@ -118,8 +118,30 @@ export function classifyStatus(code: number): StatusCategory {
  * nombre y valor. Recuerda `.trim()` para quitar espacios sobrantes.
  */
 export function parseHeaders(text: string): Headers {
-  // TODO: tu implementación aquí
-  throw new Error("Not implemented");
+  const headers: Headers = {};
+
+  for (const line of text.split(/\r?\n/)) {
+    const trimmedLine = line.trim();
+
+    if (trimmedLine === "") {
+      continue;
+    }
+
+    const separatorIndex = trimmedLine.indexOf(":");
+
+    if (separatorIndex === -1) {
+      continue;
+    }
+
+    const name = trimmedLine.slice(0, separatorIndex).trim();
+    const value = trimmedLine.slice(separatorIndex + 1).trim();
+
+    if (name !== "") {
+      headers[name] = value;
+    }
+  }
+
+  return headers;
 }
 
 /**
