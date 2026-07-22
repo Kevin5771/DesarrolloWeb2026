@@ -3,69 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Sitio — Inicio</title>
-  <!-- TODO: agrega meta description, autor, favicon -->
+  <meta name="description" content="Mini sitio web informativo sobre automóviles">
+  <meta name="author" content="Kevin">
+  <title>Pasión por los Autos | Inicio</title>
 </head>
-<body>
 
-  <!-- TODO: header con navegacion a las otras 3 paginas -->
+<body>
   <header>
-    <h1>Mi Sitio</h1>
-    <!-- TODO: <nav> con enlaces a pagina1.html, pagina2.html, pagina3.html -->
+    <h1>Pasión por los Autos</h1>
+
+    <nav aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="pagina1.html">Autos deportivos</a></li>
+        <li><a href="pagina2.html">Autos clásicos</a></li>
+        <li><a href="pagina3.html">Consejos</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main>
     <article>
-      <h2>Bienvenido</h2>
+      <header>
+        <h2>Bienvenido al mundo de los automóviles</h2>
+      </header>
 
-      <!-- TODO: usa <figure> + <figcaption> para una imagen con alt y loading="lazy" -->
-      <img src="https://via.placeholder.com/800x400"
-           alt="Imagen de bienvenida"
-           width="800" height="400"
-           loading="lazy">
+      <section>
+        <h3>Nuestro sitio</h3>
+        <p>
+          Este mini sitio presenta información básica sobre autos deportivos,
+          vehículos clásicos y consejos para cuidar un automóvil.
+        </p>
+      </section>
 
-      <p>Parrafo de introduccion. Lorem ipsum dolor sit amet.</p>
-
-      <!-- TODO: usa <dialog> + un boton con command/commandfor (Invoker Commands API) -->
-      <dialog id="bienvenida">
-        <h3>Hola!</h3>
-        <p>Esto es un dialog modal nativo.</p>
-        <form method="dialog">
-          <button>Cerrar</button>
-        </form>
-      </dialog>
-      <button command="show-modal" commandfor="bienvenida">
-        Abrir dialog
-      </button>
-
-      <!-- TODO: usa popover para un menu o tooltip -->
-      <button popovertarget="menu-ayuda">?</button>
-      <div id="menu-ayuda" popover>
-        <h4>Ayuda</h4>
-        <p>Contenido del popover...</p>
-      </div>
-
-      <!-- TODO: formulario con al menos 3 inputs (text, email, etc.) -->
-      <form action="#" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input id="nombre" type="text" name="nombre" required minlength="3">
-
-        <label for="email">Email:</label>
-        <input id="email" type="email" name="email" required>
-
-        <label for="mensaje">Mensaje:</label>
-        <textarea id="mensaje" name="mensaje" rows="4"></textarea>
-
-        <button type="submit">Enviar</button>
-      </form>
+      <section>
+        <h3>Explora el contenido</h3>
+        <p>
+          Utiliza el menú de navegación para visitar cada una de las páginas
+          disponibles.
+        </p>
+      </section>
     </article>
-
-    <!-- TODO: usa <aside> para contenido lateral -->
   </main>
 
   <footer>
-    <p>&copy; 2026 Mi Sitio — Universidad Mariano Galvez</p>
+    <p>&copy; 2026 Pasión por los Autos | Universidad Mariano Gálvez</p>
   </footer>
-
 </body>
 </html>
