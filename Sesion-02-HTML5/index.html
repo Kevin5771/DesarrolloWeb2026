@@ -44,6 +44,111 @@
         </p>
       </section>
     </article>
+
+    <section aria-labelledby="contacto-titulo">
+  <h2 id="contacto-titulo">Comparte tu auto favorito</h2>
+
+  <form action="#" method="post">
+    <p>
+      <label for="nombre">Nombre:</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        minlength="3"
+        required
+      >
+    </p>
+
+    <p>
+      <label for="correo">Correo electrónico:</label>
+      <input
+        type="email"
+        id="correo"
+        name="correo"
+        required
+      >
+    </p>
+
+    <p>
+      <label for="auto">Auto favorito:</label>
+      <input
+        type="text"
+        id="auto"
+        name="auto"
+        required
+      >
+    </p>
+
+    <p>
+      <label for="calificacion">Calificación del 1 al 5:</label>
+      <input
+        type="number"
+        id="calificacion"
+        name="calificacion"
+        min="1"
+        max="5"
+        required
+      >
+    </p>
+
+    <button type="submit">Enviar información</button>
+  </form>
+</section>
+
+<section aria-labelledby="dato-titulo">
+  <h2 id="dato-titulo">Dato automotriz</h2>
+
+  <button
+    type="button"
+    popovertarget="dato-auto"
+  >
+    Mostrar dato rápido
+  </button>
+
+  <div id="dato-auto" popover>
+    <h3>¿Sabías esto?</h3>
+    <p>
+      El mantenimiento preventivo ayuda a detectar problemas antes de que
+      causen una falla más costosa.
+    </p>
+  </div>
+</section>
+
+<section aria-labelledby="recomendaciones-titulo">
+  <h2 id="recomendaciones-titulo">Recomendaciones</h2>
+
+  <button
+    type="button"
+    commandfor="dialogo-recomendaciones"
+    command="show-modal"
+  >
+    Ver recomendaciones
+  </button>
+
+  <dialog id="dialogo-recomendaciones">
+    <h2>Recomendaciones para tu automóvil</h2>
+
+    <p>
+      Revisa periódicamente el aceite, los frenos, los neumáticos y el
+      sistema de refrigeración.
+    </p>
+
+    <ul>
+      <li>Realiza los servicios en las fechas recomendadas.</li>
+      <li>Comprueba la presión de los neumáticos.</li>
+      <li>Revisa las luces antes de conducir de noche.</li>
+    </ul>
+
+    <button
+      type="button"
+      commandfor="dialogo-recomendaciones"
+      command="close"
+    >
+      Cerrar
+    </button>
+  </dialog>
+</section>
   </main>
 
   <footer>
