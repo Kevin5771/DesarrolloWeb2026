@@ -18,3 +18,266 @@
 /* TODO: Diseño responsivo */
 /* - Usar @media queries para cambiar entre mobile y desktop */
 /* - La galería debe ser responsiva usando Grid + media queries */
+/* --------------------------------------------------
+   Configuración general
+-------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  background-color: #f3f4f6;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------
+   Encabezado
+-------------------------------------------------- */
+
+.site-header {
+  padding: 40px 20px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #111827;
+}
+
+.site-header h1 {
+  margin: 0 0 10px;
+  font-size: 2.5rem;
+}
+
+.site-header p {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  color: #d1d5db;
+}
+
+/* --------------------------------------------------
+   Contenido principal
+-------------------------------------------------- */
+
+.main-content {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.products-section {
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+
+.section-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.section-header h2 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  color: #111827;
+}
+
+.section-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+/* --------------------------------------------------
+   Galería y tarjetas
+-------------------------------------------------- */
+
+.product-gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  width: 100%;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.product-image {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.product-name {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.product-description {
+  flex: 1;
+  margin: 0 0 18px;
+  color: #4b5563;
+}
+
+.product-price {
+  margin: 0 0 18px;
+  font-size: 1.35rem;
+  font-weight: bold;
+  color: #b91c1c;
+}
+
+/* --------------------------------------------------
+   Botón de compra
+-------------------------------------------------- */
+
+.buy-button {
+  width: 100%;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+.buy-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.buy-button:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------
+   Pie de página
+-------------------------------------------------- */
+
+.site-footer {
+  padding: 24px 20px;
+  text-align: center;
+  color: #d1d5db;
+  background-color: #111827;
+}
+
+.site-footer p {
+  margin: 0;
+}
+/* --------------------------------------------------
+   Lista de tareas
+-------------------------------------------------- */
+
+.todo-section {
+  margin-top: 40px;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.todo-list {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background-color: #ffffff;
+}
+
+.todo-item:nth-child(even) {
+  background-color: #f3f4f6;
+}
+
+.todo-item + .todo-item {
+  border-top: 1px solid #d1d5db;
+}
+
+.todo-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.todo-item label {
+  flex: 1;
+  cursor: pointer;
+}
+
+.todo-item input[type="checkbox"]:checked + label {
+  color: #6b7280;
+  text-decoration: line-through;
+}
+
+.todo-item input[type="checkbox"]:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------
+   Diseño responsivo
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .product-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .main-content {
+    width: 94%;
+    padding: 24px 0;
+  }
+
+  .products-section,
+  .todo-section {
+    padding: 20px;
+  }
+
+  .product-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .site-header h1 {
+    font-size: 2rem;
+  }
+}
