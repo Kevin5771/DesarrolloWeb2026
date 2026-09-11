@@ -96,9 +96,8 @@ export async function leerLineas(ruta) {
  * @returns {string}
  */
 export function rutaAbsoluta(rutaRelativa) {
-    throw new Error('Not implemented: rutaAbsoluta');
+    return join(__dirname, rutaRelativa);
 }
-
 /**
  * Parsea el contenido de un archivo de configuración ".env" (simple).
  * Formato por línea: CLAVE=VALOR  (ignora líneas vacías y las que empiezan con #).
