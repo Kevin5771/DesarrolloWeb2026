@@ -17,6 +17,7 @@ import { createReadStream, createWriteStream } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
+import { Transform } from 'node:stream';
 import { dirname, join } from 'node:path';
 
 // __dirname y __filename reproducidos con import.meta.url (ES Modules)
@@ -73,7 +74,47 @@ export function generarId() {
  * @returns {Promise<number>} cantidad de líneas que coincidieron (0 si no hay).
  */
 export async function filtrarLogs(origen, destino, texto) {
-    throw new Error('Not implemented: filtrarLogs');
+    let coincidencias = 0;
+    let buffer = '';
+
+    const filtro = new Transform({
+        transform(chunk, encoding, callback) {
+            buffer += chunk.toString();
+
+            const lineas = buffer.split(/\r?\n/);
+
+            buffer = lineas.pop() ?? '';
+
+            for (const linea of lineas) {
+                if (linea.includes(texto)) {
+                    coincidencias++;
+                    this.push(`${linea}\n`);
+                }
+            }
+
+            callback();
+        },
+
+        flush(callback) {
+            if (
+                buffer.length > 0 &&
+                buffer.includes(texto)
+            ) {
+                coincidencias++;
+                this.push(`${buffer}\n`);
+            }
+
+            callback();
+        },
+    });
+
+    await pipeline(
+        createReadStream(origen),
+        filtro,
+        createWriteStream(destino)
+    );
+
+    return coincidencias;
 }
 
 /**
@@ -85,7 +126,19 @@ export async function filtrarLogs(origen, destino, texto) {
  * @returns {Promise<string[]>}
  */
 export async function leerLineas(ruta) {
-    throw new Error('Not implemented: leerLineas');
+    const stream = createReadStream(ruta, {
+        encoding: 'utf8',
+    });
+
+    let contenido = '';
+
+    for await (const chunk of stream) {
+        contenido += chunk;
+    }
+
+    return contenido
+        .split(/\r?\n/)
+        .filter((linea) => linea.trim().length > 0);
 }
 
 /**
@@ -107,5 +160,36 @@ export function rutaAbsoluta(rutaRelativa) {
  * @returns {Record<string, string>}
  */
 export function parsearEnv(contenido) {
-    throw new Error('Not implemented: parsearEnv');
+    const config = {};
+
+    const lineas = contenido.split(/\r?\n/);
+
+    for (const lineaOriginal of lineas) {
+        const linea = lineaOriginal.trim();
+
+        if (linea === '' || linea.startsWith('#')) {
+            continue;
+        }
+
+        const posicionIgual = linea.indexOf('=');
+
+        if (posicionIgual === -1) {
+            continue;
+        }
+
+        const clave = linea
+            .slice(0, posicionIgual)
+            .trim()
+            .toUpperCase();
+
+        const valor = linea
+            .slice(posicionIgual + 1)
+            .trim();
+
+        if (clave) {
+            config[clave] = valor;
+        }
+    }
+
+    return config;
 }
