@@ -16,7 +16,7 @@ import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { JSDOM } from 'jsdom';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -50,42 +50,89 @@ beforeEach(async () => {
     const html = await readFile(join(publicDir, 'index.html'), 'utf-8');
     dom = new JSDOM(html, { url: 'http://localhost:3000/' });
 
-    // jsdom no implementa showModal/close de <dialog>: los simulamos
     const { HTMLDialogElement } = dom.window;
-    HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
-    HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
 
-    // Mock de fetch: registra cada llamada y responde según el método
-    llamadas = [];
-    dom.window.fetch = async (url, opciones = {}) => {
-        llamadas.push({ url: String(url), opciones });
-        const metodo = (opciones.method ?? 'GET').toUpperCase();
-        if (metodo === 'GET') {
-            const match = String(url).match(/\/alumnos\/([^/]+)$/);
-            if (match) {
-                const alumno = ALUMNOS.find((a) => a.id === match[1]);
-                return alumno
-                    ? respuesta(alumno)
-                    : respuesta({ error: 'No encontrado' }, { ok: false, status: 404 });
-            }
-            return respuesta(ALUMNOS);
-        }
-        const datos = opciones.body ? JSON.parse(opciones.body) : {};
-        if (metodo === 'POST') return respuesta({ id: 'a-9', ...datos }, { status: 201 });
-        if (metodo === 'PUT') return respuesta({ id: 'a-1', ...datos });
-        if (metodo === 'DELETE') return respuesta(null, { status: 204 });
-        return respuesta({}, { ok: false, status: 400 });
+    HTMLDialogElement.prototype.showModal = function () {
+        this.setAttribute('open', '');
     };
 
-    // Exponer los globals que usa public/app.js
+    HTMLDialogElement.prototype.close = function () {
+        this.removeAttribute('open');
+    };
+
+    llamadas = [];
+
+    dom.window.fetch = async (url, opciones = {}) => {
+        llamadas.push({ url: String(url), opciones });
+
+        const metodo = (opciones.method ?? 'GET').toUpperCase();
+
+        if (metodo === 'GET') {
+            const match = String(url).match(/\/alumnos\/([^/]+)$/);
+
+            if (match) {
+                const alumno = ALUMNOS.find(
+                    (a) => a.id === match[1]
+                );
+
+                return alumno
+                    ? respuesta(alumno)
+                    : respuesta(
+                        { error: 'No encontrado' },
+                        { ok: false, status: 404 }
+                    );
+            }
+
+            return respuesta(ALUMNOS);
+        }
+
+        const datos = opciones.body
+            ? JSON.parse(opciones.body)
+            : {};
+
+        if (metodo === 'POST') {
+            return respuesta(
+                { id: 'a-9', ...datos },
+                { status: 201 }
+            );
+        }
+
+        if (metodo === 'PUT') {
+            return respuesta({
+                id: 'a-1',
+                ...datos,
+            });
+        }
+
+        if (metodo === 'DELETE') {
+            return respuesta(null, {
+                status: 204,
+            });
+        }
+
+        return respuesta(
+            {},
+            { ok: false, status: 400 }
+        );
+    };
+
     global.window = dom.window;
     global.document = dom.window.document;
     global.fetch = dom.window.fetch;
     global.Event = dom.window.Event;
 
-    // Ejecutar app.js (cache-busting para re-ejecutarlo en cada test)
-    await import(`${join(publicDir, 'app.js')}?t=${Date.now()}-${Math.random()}`);
-    dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+    const appUrl = pathToFileURL(
+        join(publicDir, 'app.js')
+    ).href;
+
+    await import(
+        `${appUrl}?t=${Date.now()}-${Math.random()}`
+    );
+
+    dom.window.document.dispatchEvent(
+        new dom.window.Event('DOMContentLoaded')
+    );
+
     await esperar();
 });
 
